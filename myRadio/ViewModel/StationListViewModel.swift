@@ -67,8 +67,6 @@ final class StationListModelView: ObservableObject {
             
             try csvFile.enumerateAsDict { dict in
                 
-                
-                
                 // If station row is active, add to list
                 if dict["STATUS"] == "1" {
                     

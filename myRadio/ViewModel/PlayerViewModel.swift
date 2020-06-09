@@ -17,6 +17,11 @@ final class PlayerViewModel: ObservableObject {
     @Published var isPlaying: Bool = false
     @Published var isLoading: Bool = false
     @Published var station: Station = sampleStationList[0]
+    @Published var isSleepMode: Bool = false
+    
+    
+    
+    private var workItem: DispatchWorkItem?
     
     private var avPlayer: AVPlayer?
     private var observer: NSKeyValueObservation?
@@ -116,6 +121,24 @@ final class PlayerViewModel: ObservableObject {
             avPlayer?.play()
         }
         self.isPlaying.toggle()
+    }
+    
+    // MARK: - SLEEP TIMER
+    
+    func setTimer(countDown: Int) {
+        isSleepMode = true
+        
+        workItem = DispatchWorkItem(block: {
+            self.avPlayer?.pause()
+            self.isPlaying = false
+        })
+        let delayInSecond: Double = Double(countDown * 60)
+        DispatchQueue.main.asyncAfter(deadline: .now() + delayInSecond, execute: workItem!)
+    }
+    
+    func disableSleepMode() {
+        isSleepMode = false
+        workItem?.cancel()
     }
 }
 

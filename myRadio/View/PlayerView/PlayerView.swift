@@ -21,52 +21,61 @@ struct PlayerView: View {
             
             VStack(alignment: .center, spacing: 20) {
                         
-                        ImageLoaderView(imageUrl: station.logo)
-                            .frame(width: 140, height: 140, alignment: .center)
-                            .modifier(LogoModifier())
-                        
-                        Text(station.title)
-                            .font(.system(.title, design: .rounded))
-                            .fontWeight(.semibold)
-                            .padding(.horizontal, 10)
-                            .multilineTextAlignment(.center)
-                        
-                        GenresView(genres: station.genres)
+                ImageLoaderView(imageUrl: station.logo)
+                    .frame(width: 140, height: 140, alignment: .center)
+                    .modifier(LogoModifier())
                 
-                        Text(station.desc)
-                            .font(.system(.body, design: .rounded))
-                            .fontWeight(.light)
-                            .padding(.horizontal, 10)
-                            .multilineTextAlignment(.center)
-                        
-                        Spacer()
-                        
-                        HStack(alignment: .center, spacing: 40) {
-                            ShareButton(station: station, size: 30)
-                            FavoritesButton(station: station, size: 30)
-                        }
-                        
-                        HStack(alignment: .center, spacing: 40) {
-                            
-                            // MARK: Previous Station
-                            PreviousButton()
-                            
-                            
-                            // MARK: Pause/Resume
-                            if(playerViewModel.isLoading) {
-                                ActivityIndicator()
-                                    .frame(width:90, height: 90)
-                                    .foregroundColor(Color("ColorOffWhiteAdaptive"))
-                            } else {
-                                PlayButton()
-                            }
-                            
-                            // MARK: Next Station
-                            NextButton()
-                        }
+                Text(station.title)
+                    .font(.system(.title, design: .rounded))
+                    .fontWeight(.semibold)
+                    .padding(.horizontal, 10)
+                    .multilineTextAlignment(.center)
+                
+                GenresView(genres: station.genres)
+                    .padding(.horizontal)
+        
+                Text(station.desc)
+                    .font(.system(.body, design: .rounded))
+                    .fontWeight(.light)
+                    .padding(.horizontal, 10)
+                    .multilineTextAlignment(.center)
+                
+                Spacer()
+                
+                if (showLogoInPlayerScreen) {
+                    Image("logo_player")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxHeight: 100)
+                }
+                    
+                    
+                HStack(alignment: .center, spacing: 40) {
+                    ShareButton(station: station, size: 30)
+                    FavoritesButton(station: station, size: 30)
+                }
+                
+                HStack(alignment: .center, spacing: 40) {
+                    
+                    // MARK: Previous Station
+                    PreviousButton()
+                    
+                    
+                    // MARK: Pause/Resume
+                    if(playerViewModel.isLoading) {
+                        ActivityIndicator()
+                            .frame(width:90, height: 90)
+                            .foregroundColor(Color("ColorOffWhiteAdaptive"))
+                    } else {
+                        PlayButton()
                     }
-                    .padding(.vertical, 20)
-        }
+                    
+                    // MARK: Next Station
+                    NextButton()
+                }
+            } // VStack
+            .padding(.vertical, 20)
+        } // ZStack
         
     }
 }
