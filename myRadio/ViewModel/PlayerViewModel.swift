@@ -10,7 +10,8 @@ import SwiftUI
 import AVFoundation
 import MediaPlayer
 
-final class PlayerViewModel: ObservableObject {
+final class PlayerViewModel: NSObject, ObservableObject {
+    
     
     // MARK: - PROPERTIES
     @Published var didSet: Bool = false
@@ -18,18 +19,27 @@ final class PlayerViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var station: Station = sampleStationList[0]
     @Published var isSleepMode: Bool = false
-    
-    
-    
-    private var workItem: DispatchWorkItem?
-    
+    @Published var isRecording: Bool = false
+    @Published var track: Track = Track(title: "", artist: "")
+
+    // MARK: Radio Player
     private var avPlayer: AVPlayer?
     private var observer: NSKeyValueObservation?
     private var stationIndex: Int = 0
     
+    
+    // MARK: Sleep
+    private var workItem: DispatchWorkItem?
+    
+    // MARK: Recording
+    var player: AVPlayer!
+    var playerItem: CachingPlayerItem!
+    var recordingName: String?
+
     // MARK: - SETUP
-    init() {
-       setupAVAudioSession()
+    override init() {
+        super.init()
+        setupAVAudioSession()
     }
     
     private func setupAVAudioSession() {
@@ -69,6 +79,24 @@ final class PlayerViewModel: ObservableObject {
         }
     }
 
+    // MARK: - MPNowPlayingInfoCenter (Lock screen)
+    func updateLockScreen() {
+        
+        // Define Now Playing Info
+        var nowPlayingInfo = [String : Any]()
+
+        nowPlayingInfo[MPMediaItemPropertyTitle] = track.title
+        nowPlayingInfo[MPMediaItemPropertyArtist] = track.artist
+
+        if let image = track.artworkImage {
+            nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: image.size, requestHandler: { size -> UIImage in
+                return image
+            })
+        }
+        // Set the metadata
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+    }
+    
     
     // MARK: - CONTROLLERS
     func isStationPlaying(stationId: String) -> Bool {
@@ -81,16 +109,26 @@ final class PlayerViewModel: ObservableObject {
     func streamStation(station: Station) {
         self.station = station
         self.didSet = true
+        self.track = Track(title:station.title, artist:"")
+        
+        // Set MPNowPlayingInfoCenter title
+        self.updateLockScreen()
         
         self.stationIndex = stationList.firstIndex(where: { $0.streamURL == station.streamURL })!
             
-        avPlayer = AVPlayer(url: URL(string: station.streamURL)!)
+        // Meta data
+        let asset = AVAsset(url: URL(string: station.streamURL)!)
+        let playerItem = AVPlayerItem(asset: asset)
+        let metadataOutput = AVPlayerItemMetadataOutput(identifiers: nil)
+        metadataOutput.setDelegate(self, queue: DispatchQueue.main)
+        playerItem.add(metadataOutput)
+        
+        // Player
+        avPlayer = AVPlayer(playerItem: playerItem)
         avPlayer?.play()
         self.isLoading = true
         
-        // Set MPNowPlayingInfoCenter title
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = [MPMediaItemPropertyTitle: station.title]
-        
+
         // Register as an observer of the player item's timeControlStatus property
         self.observer = avPlayer?.observe(\.timeControlStatus, options:  [.new, .old], changeHandler: { (avPlayer, change) in
             if avPlayer.timeControlStatus == .playing {
@@ -114,13 +152,18 @@ final class PlayerViewModel: ObservableObject {
         streamStation(station: previousStation)
     }
     
-    func pauseResume() {
+    func togglePlaying() {
         if self.isPlaying {
             avPlayer?.pause()
         } else {
             avPlayer?.play()
         }
         self.isPlaying.toggle()
+    }
+    
+    func stopPlaying() {
+        avPlayer?.pause()
+        self.isPlaying = false
     }
     
     // MARK: - SLEEP TIMER
@@ -140,7 +183,145 @@ final class PlayerViewModel: ObservableObject {
         isSleepMode = false
         workItem?.cancel()
     }
+    
+    // MARK: - RECORDER
+    
+    func resetRecordingSetting(){
+        playerItem.stopDownloading()
+        recordingName = nil
+        playerItem = nil
+    }
+    
+    func startRecording(){
+        recordingName = "\(Date().timeIntervalSince1970).mp3"
+        let url = URL(string: self.station.streamURL)!
+        playerItem = CachingPlayerItem(url: url, recordingName: recordingName ?? "default.mp3")
+        player = AVPlayer(playerItem: playerItem)
+        player.automaticallyWaitsToMinimizeStalling = false
+        
+        isRecording = true
+    }
+
+    func stopRecording(){
+        let number = getAllRecordings().count + 1
+        self.saveRecordingWithUserProvidedName(name: "\(number).mp3")
+        isRecording = false
+    }
+    
+    func saveRecordingWithUserProvidedName(name: String){
+        playerItem.stopDownloading()
+        guard let currentName = recordingName else{return}
+        
+        do {
+            let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+            let documentDirectory = URL(fileURLWithPath: path)
+            let originPath = documentDirectory.appendingPathComponent(currentName)
+            let destinationPath = documentDirectory.appendingPathComponent(name)
+            try FileManager.default.moveItem(at: originPath, to: destinationPath)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func discardRecording() {
+        
+        let fileNameToDelete = recordingName ?? "default.mp3"
+        var filePath = ""
+        
+        // Fine documents directory on device
+        let dirs : [String] = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true)
+        
+        if dirs.count > 0 {
+            let dir = dirs[0] //documents directory
+            filePath = dir.appendingFormat("/" + fileNameToDelete)
+            print("Local path = \(filePath)")
+            
+        } else {
+            print("Could not find local directory to store file")
+            return
+        }
+        
+        
+        do {
+            let fileManager = FileManager.default
+            
+            // Check if file exists
+            if fileManager.fileExists(atPath: filePath) {
+                // Delete file
+                try fileManager.removeItem(atPath: filePath)
+            } else {
+                print("File does not exist")
+            }
+            
+        }
+        catch let error as NSError {
+            print("An error took place: \(error)")
+        }
+        resetRecordingSetting()
+        
+    }
+    
+    func getAllRecordings() -> [URL]{
+           
+           var recordingURLs = [URL]()
+           do {
+               let documentsURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+               let docs = try FileManager.default.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: [], options:  [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
+               let recordings = docs.filter{ $0.pathExtension == "mp3" }
+               recordingURLs = recordings
+           } catch {
+               print(error)
+           }
+           return recordingURLs
+       }
+    
+    
 }
 
+extension PlayerViewModel: AVPlayerItemMetadataOutputPushDelegate {
+    
+    func metadataOutput(_ output: AVPlayerItemMetadataOutput, didOutputTimedMetadataGroups groups: [AVTimedMetadataGroup], from track: AVPlayerItemTrack?) {
+        
+        if let item = groups.first?.items.first // make this an AVMetadata item
+        {
+            let metaTitle = (item.value(forKeyPath: "value")!) as! String
+                
+            // Split metatitle into asong and artist
+            let words = metaTitle.split(separator: "-", maxSplits: 1).map(String.init)
+
+            if words.count > 1 {
+                self.track = Track(title: String(words[1].dropFirst()), artist: String(words[0].dropLast()))
+            } else {
+                self.track = Track(title: metaTitle, artist: "")
+            }
+            
+            // Set MPNowPlayingInfoCenter title
+            self.updateLockScreen()
+            
+            // Fetch artwork album
+            FRadioAPI.getArtwork(for: metaTitle, size: Int(artworkSize * 2), completionHandler: { [unowned self] artworlURL in
+                
+                DispatchQueue.main.async {
+                    self.track.artworkURL = artworlURL?.absoluteString
+    
+                    // Fetch image
+                    if self.track.artworkURL != nil {
+                        DispatchQueue.global().async {
+                            if let url = URL(string:self.track.artworkURL!)  {
+                                if let data = try? Data.init(contentsOf: url), let image = UIImage(data: data) {
+                                    DispatchQueue.main.async {
+                                        self.track.artworkImage = image
+                                        self.updateLockScreen()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+            })
+        }
+    }
+}
 
 

@@ -31,6 +31,20 @@ struct LogoModifier: ViewModifier {
     }
 }
 
+struct TrackModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .clipShape(Rectangle())
+            .shadow(radius: 5)
+            .overlay(
+                Circle()
+                    .stroke(Color(UIColor.systemBlue), lineWidth: 1)
+                    .opacity(0.3)
+            )
+            .padding(10)
+    }
+}
+
 
 struct PlayerControllerButtonModifier: ViewModifier {
     func body(content: Content) -> some View {

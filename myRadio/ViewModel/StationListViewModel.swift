@@ -13,6 +13,7 @@ import SwiftCSV
 var stationList:[Station] = []
 var originalStationList:[Station] = []
 var genreList:[String] = []
+var countryList:[String] = []
 
 // Used for the SWIFTUI Previews
 let sampleStationList = [
@@ -33,7 +34,8 @@ final class StationListModelView: ObservableObject {
     @Published var dataIsLoading: Bool = false
     @Published var favoriteStationList: [Station] = []
     @Published var selectedGenres: [String] = []
-    @Published var showResetSelectedGenresButton: Bool = false
+    @Published var selectedCountries: [String] = []
+    @Published var showResetFilterButton: Bool = false
     
     // Standar user defaults
     private let defaults = UserDefaults.standard
@@ -62,6 +64,7 @@ final class StationListModelView: ObservableObject {
         self.dataIsLoading = true
         stationList = []
         genreList = []
+        countryList = []
         do {
             let csvFile: CSV = try CSV(url: URL(string: csvUrl)!)
             
@@ -81,11 +84,17 @@ final class StationListModelView: ObservableObject {
                         }
                     }
                     
+                    let countryCode = dict["COUNTRY"]!
+                    // Add genre to the genres list if not added
+                    if countryList.firstIndex(of: countryCode) == nil {
+                        countryList.append(countryCode)
+                    }
+                    
                     
                     // Create a station object
                     let station: Station = Station(
                         id: dict["ID"]!,
-                        countryCode: dict["COUNTRY"]!,
+                        countryCode: countryCode,
                         title: dict["TITLE"]!,
                         logo: dict["LOGO"]!,
                         streamURL: dict["STREAMURL"]!,
@@ -117,9 +126,10 @@ final class StationListModelView: ObservableObject {
     }
     
     // MARK: - GENRES
-    func resetSelectedGenres() {
+    func resetFilter() {
         selectedGenres = []
-        setShowResetSelectedGenresButton()
+        selectedCountries = []
+        setShowResetFilterButton()
         setStationList()
     }
     
@@ -134,38 +144,78 @@ final class StationListModelView: ObservableObject {
         
         setStationList()
         
-        setShowResetSelectedGenresButton()
+        setShowResetFilterButton()
     }
     
-    private func setStationList() {
-        // if no selected genres, show all stations
-        if selectedGenres.count == 0 {
-            stationList = originalStationList
+    func toggleCountry(country: String) {
+        // Check the country is selected
+        // if yes, unselect it; if no, select it
+        if let index = selectedCountries.firstIndex(of: country) {
+            selectedCountries.remove(at: index)
         } else {
-            stationList = []
-            
-            for genre in selectedGenres {
-                for station in originalStationList {
-                    if station.genres.contains(genre) {
-                        if !stationList.contains(station) {
-                            stationList.append(station)
-                        }
+            selectedCountries.append(country)
+        }
+        
+        setStationList()
+        
+        setShowResetFilterButton()
+    }
+    
+    
+    private func setStationList() {
+        // if no selected countries and genres, show all stations
+        if selectedCountries.count == 0 && selectedGenres.count == 0 {
+            stationList = originalStationList
+            return
+        }
+        
+        // Countries filter
+        var set1Arr: [Station] = selectedCountries.count == 0 ? originalStationList : []
+        for country in selectedCountries {
+            for station in originalStationList {
+                if station.countryCode == country {
+                    if !set1Arr.contains(station) {
+                        set1Arr.append(station)
                     }
                 }
             }
         }
+        let set1:Set<Station> = Set(set1Arr)
+        
+        // Genres filter
+        var set2Arr: [Station] = selectedGenres.count == 0 ? originalStationList : []
+        for genre in selectedGenres {
+            for station in originalStationList {
+                if station.genres.contains(genre) {
+                    if !set2Arr.contains(station) {
+                        set2Arr.append(station)
+                    }
+                }
+            }
+        }
+        let set2:Set<Station> = Set(set2Arr)
+        
+        // Instersect filtered sets
+        stationList = Array(set1.intersection(set2))
     }
     
-    private func setShowResetSelectedGenresButton() {
-        if selectedGenres.count == 0 {
-            showResetSelectedGenresButton = false
+    private func setShowResetFilterButton() {
+        if selectedGenres.count == 0 && selectedCountries.count == 0 {
+            showResetFilterButton = false
         } else {
-            showResetSelectedGenresButton = true
+            showResetFilterButton = true
         }
     }
     
     func isGenreSelected(name: String) -> Bool {
         if selectedGenres.firstIndex(of: name) != nil {
+            return true
+        }
+        return false
+    }
+    
+    func isCountrySelected(name: String) -> Bool {
+        if selectedCountries.firstIndex(of: name) != nil {
             return true
         }
         return false

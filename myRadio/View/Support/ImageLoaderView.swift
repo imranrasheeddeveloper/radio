@@ -7,8 +7,6 @@
 //
 
 import SwiftUI
-
-import SwiftUI
 import SDWebImageSwiftUI
 
 struct ImageLoaderView: View {

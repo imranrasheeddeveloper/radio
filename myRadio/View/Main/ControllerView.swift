@@ -14,6 +14,7 @@ struct ControllerView: View {
     @EnvironmentObject var stationListViewModel: StationListModelView
     @EnvironmentObject var playerViewModel: PlayerViewModel
     
+    
     // MARK: - VIEW
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
@@ -21,22 +22,43 @@ struct ControllerView: View {
             Button(action: {
                 self.showModal.toggle()
             }) {
-                Image(systemName: "chevron.up.circle.fill")
-                    .font(.title)
-                    .foregroundColor(Color.white)
-                    .shadow(radius: 4)
-            }.sheet(isPresented: $showModal) {
+                
+                if (self.playerViewModel.track.artworkURL != nil) {
+                    ImageLoaderView(imageUrl: self.playerViewModel.track.artworkURL!)
+                        .frame(width: 40, height: 40, alignment: .center)
+                    .modifier(TrackModifier())
+                } else {
+                    ImageLoaderView(imageUrl: self.playerViewModel.station.logo)
+                        .frame(width: 40, height: 40, alignment: .center)
+                        .modifier(LogoModifier())
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .center, spacing: 5) {
+                    Image(systemName: "chevron.up")
+                        .resizable()
+                        .frame(width: 15, height: 5, alignment: .center)
+                        .foregroundColor(Color.white)
+                        .shadow(radius: 4)
+                    
+                    Text(playerViewModel.station.title)
+                        .font(.system(.body, design: .rounded))
+                    
+                    Text(self.playerViewModel.track.metaTitle())
+                        .font(.system(size:10, design: .rounded))
+                        .fontWeight(.light)
+                }
+            }
+            .buttonStyle(PlainButtonStyle())
+            .sheet(isPresented: $showModal) {
                 PlayerView(station: self.playerViewModel.station)
                     .environmentObject(self.playerViewModel)
                     .environmentObject(self.stationListViewModel)
                 
             }
-                
-            .padding(10)
             
-            Spacer()
             
-            Text(playerViewModel.station.title)
             
             Spacer()
            
@@ -47,7 +69,7 @@ struct ControllerView: View {
                     .padding(10)
             } else {
                 Button(action: {
-                    self.playerViewModel.pauseResume()
+                    self.playerViewModel.togglePlaying()
                 }) {
                     Image(systemName:playerViewModel.isPlaying ? "pause.circle" : "play.circle")
                         .resizable()

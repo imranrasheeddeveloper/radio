@@ -21,7 +21,10 @@ let showAds = false // Set it false if you don't want to show ads
 let csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR7B_jzm-N-PVek6OfWGzSNcWml_-QIor5aM72j-vhSITo4VyYQCO_Kae0iG3SN8Ll7MPHPul_Uwszk/pub?output=csv"
 
 // MARK: - OPTIONS
-let showLogoInPlayerScreen = true /// (Note: You should set "logo_player" in the Assets.xcassets if you set true)
+let showLogoInPlayerScreen = false /// (Note: You should set "logo_player" in the Assets.xcassets if you set true)
+
+// Artwork Image Size
+let artworkSize:CGFloat = 180
 
 // MARK: - LOCALIZATIONS
 // Sharing confiigurations
@@ -32,6 +35,7 @@ let shareURL: String = "https://apps.apple.com/app/id1515483035"
 // Texts
 let favoritesText = "Favorites"
 let genresText = "Genres"
+let countriesText = "Countries"
 let resetFilterText = "Reset Filter"
 
 

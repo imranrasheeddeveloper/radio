@@ -15,15 +15,25 @@ struct PlayerView: View {
     @EnvironmentObject var playerViewModel: PlayerViewModel
     @EnvironmentObject var stationListViewModel: StationListModelView
     
+    
     // MARK: - VIEW
     var body: some View {
         ZStack {
             
-            VStack(alignment: .center, spacing: 20) {
+            VStack(alignment: .center, spacing: 10) {
                         
-                ImageLoaderView(imageUrl: station.logo)
-                    .frame(width: 140, height: 140, alignment: .center)
-                    .modifier(LogoModifier())
+                if (self.playerViewModel.track.artworkURL != nil) {
+                    ImageLoaderView(imageUrl: self.playerViewModel.track.artworkURL!)
+                        .frame(width: artworkSize, height: artworkSize, alignment: .center)
+                } else {
+                    ImageLoaderView(imageUrl: station.logo)
+                        .frame(width: 100, height: 100, alignment: .center)
+                        .modifier(LogoModifier())
+                }
+                
+                Text(self.playerViewModel.track.metaTitle())
+                    .font(.system(.body, design: .rounded))
+                    .fontWeight(.light)
                 
                 Text(station.title)
                     .font(.system(.title, design: .rounded))
@@ -31,11 +41,8 @@ struct PlayerView: View {
                     .padding(.horizontal, 10)
                     .multilineTextAlignment(.center)
                 
-                GenresView(genres: station.genres)
-                    .padding(.horizontal)
-        
                 Text(station.desc)
-                    .font(.system(.body, design: .rounded))
+                    .font(.system(.caption, design: .rounded))
                     .fontWeight(.light)
                     .padding(.horizontal, 10)
                     .multilineTextAlignment(.center)
@@ -51,6 +58,8 @@ struct PlayerView: View {
                     
                     
                 HStack(alignment: .center, spacing: 40) {
+                    RecordingButton(size: 30)
+                    SleepButton(size: 30)
                     ShareButton(station: station, size: 30)
                     FavoritesButton(station: station, size: 30)
                 }
@@ -59,7 +68,6 @@ struct PlayerView: View {
                     
                     // MARK: Previous Station
                     PreviousButton()
-                    
                     
                     // MARK: Pause/Resume
                     if(playerViewModel.isLoading) {

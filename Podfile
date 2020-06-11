@@ -9,5 +9,7 @@ target 'myRadio' do
   pod 'Google-Mobile-Ads-SDK'
   pod "SwiftCSV"
   pod 'FlagKit'
+  
+  pod 'Firebase/Analytics'
 
 end

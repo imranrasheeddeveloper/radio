@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Station: Identifiable, Codable, Equatable {
+struct Station: Identifiable, Codable, Equatable, Hashable {
     var id: String
     var countryCode: String
     var title: String

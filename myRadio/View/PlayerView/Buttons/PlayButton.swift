@@ -19,7 +19,7 @@ struct PlayButton: View {
     var body: some View {
         
         Button(action: {
-            self.playerViewModel.pauseResume()
+            self.playerViewModel.togglePlaying()
         }) {
             Image(systemName: playerViewModel.isPlaying ? "pause.circle.fill" : "play.circle.fill")
                 .resizable()

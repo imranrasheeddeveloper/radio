@@ -15,55 +15,18 @@ struct ContentView: View {
     @EnvironmentObject var stationListViewModel: StationListModelView
     @EnvironmentObject var playerViewModel: PlayerViewModel
     @State private var searchText = ""
-    @State private var showSleepModal: Bool = false
     
     var foreverAnimation: Animation {
         Animation.linear(duration: 2.0)
             .repeatForever(autoreverses: false)
     }
     
+    let size:CGFloat = 40
     // MARK: - VIEW
     var body: some View {
         ZStack(alignment: .bottom) {
 
             VStack(alignment: .center, spacing: 0) {
-                
-                HStack(alignment: .center, spacing: 10) {
-                    Button(action: {
-                        if(self.playerViewModel.isSleepMode) {
-                            self.playerViewModel.disableSleepMode()
-                        } else {
-                            self.showSleepModal.toggle()
-                        }
-                    }) {
-                        Image(systemName: self.playerViewModel.isSleepMode ? "moon.zzz.fill" : "moon.circle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 30, height: 30, alignment: .center)
-                            .padding()
-                            .foregroundColor(self.playerViewModel.isSleepMode ? Color(UIColor.systemGreen) : Color(UIColor.systemBlue))
-                    }.sheet(isPresented: $showSleepModal) {
-                        SleepView()
-                            .environmentObject(self.playerViewModel)
-                    }
-                    
-                    
-                    Spacer()
-                    Button(action: {
-                        print("Start Recording")
-                    }) {
-                        Image(systemName: "recordingtape")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 30, height: 30, alignment: .center)
-                            .padding()
-                    }
-                }
-                
-
-                
-                Divider()
-                
                 
                 if stationListViewModel.favoriteStationList.count > 0 {
                     FavoriteListView()
