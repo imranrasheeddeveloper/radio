@@ -8,6 +8,10 @@
 
 import Foundation
 import SwiftCSV
+import FirebaseFirestore
+import CodableFirebase
+
+let db = Firestore.firestore()
 
 // All station list will be loaded at the opening of application
 var stationList:[Station] = []
@@ -43,6 +47,8 @@ final class StationListModelView: ObservableObject {
     // Keep only id's of radio stations in the user defaults
     private var favoriteStationIDList: [String] = []
     
+    
+    // MARK: - SETUP
     init() {
         // Load favorite id list from the user defaults
         loadFavoriteIdList()
@@ -65,6 +71,74 @@ final class StationListModelView: ObservableObject {
         stationList = []
         genreList = []
         countryList = []
+        
+        switch databaseSource {
+            case DatabaseSource.FIREBASE_FIRESTORE:
+                readDataFromFireStore()
+                break;
+            case DatabaseSource.REMOTE_CSV:
+                readDataFromRemoteCSV()
+                break;
+            case DatabaseSource.LOCAL_JSON:
+                readFromLocal()
+                break;
+        }
+    }
+    
+    /// Configure genres, countries, favorites
+    func configureLoadedData() {
+        // Keep the original data for filtering
+        originalStationList = stationList
+        
+        for station in stationList {
+            // Check genres
+            station.genres.forEach{
+                // Add genre to the genres list if not added
+                if genreList.firstIndex(of: $0) == nil {
+                    genreList.append($0)
+                }
+            }
+            
+            // Add country to the countries list if not added
+            if countryList.firstIndex(of: station.countryCode) == nil {
+                countryList.append(station.countryCode)
+            }
+            
+            // Check the station id is in favorite list
+            // If yes, add the station to favorite station list
+            if self.isFavorite(stationID: station.id) {
+                self.favoriteStationList.append(station)
+            }
+        }
+    }
+    
+    
+    // MARK: FIREBASE FIRESTORE
+    
+    func readDataFromFireStore() {
+        db.collection(FIRStoreStationsCollection).getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    let station = try! FirestoreDecoder().decode(Station.self, from: document.data())
+                    
+                    // Add station if status is true
+                    if station.status {
+                        stationList.append(station)
+                    }
+                }
+                // Configure genres, countries, favorites
+                self.configureLoadedData()
+            }
+
+            self.dataIsLoading = false
+        }
+    }
+    
+    // MARK: REMOTE CSV GOOGLE SHEET
+    
+    func readDataFromRemoteCSV() {
         do {
             let csvFile: CSV = try CSV(url: URL(string: csvUrl)!)
             
@@ -77,19 +151,9 @@ final class StationListModelView: ObservableObject {
                     var genres:[String] = []
                     for genre in dict["GENRES"]!.components(separatedBy: ",") {
                         genres.append(genre)
-                        
-                        // Add genre to the genres list if not added
-                        if genreList.firstIndex(of: genre) == nil {
-                            genreList.append(genre)
-                        }
                     }
                     
                     let countryCode = dict["COUNTRY"]!
-                    // Add genre to the genres list if not added
-                    if countryList.firstIndex(of: countryCode) == nil {
-                        countryList.append(countryCode)
-                    }
-                    
                     
                     // Create a station object
                     let station: Station = Station(
@@ -105,27 +169,50 @@ final class StationListModelView: ObservableObject {
 
                     // Add station to the all station list
                     stationList.append(station)
-                    
-                    // Check the station id is in favorite list
-                    // If yes, add the station to favorite station list
-                    if self.isFavorite(stationID: station.id) {
-                        self.favoriteStationList.append(station)
-                    }
                 }
-                
             }
-            
+
+            // Configure genres, countries, favorites
+            configureLoadedData()
             self.dataIsLoading = false
-            
-            originalStationList = stationList
         }
         catch {
-            self.dataIsLoading = false
             print("ERROR: Loading CSV File error")
         }
     }
     
-    // MARK: - GENRES
+    
+    // MARK: LOCAL DATA
+    func readFromLocal() {
+        stationList = load(dataJsonFile)
+    
+        // Configure genres, countries, favorites
+        configureLoadedData()
+        self.dataIsLoading = false
+    }
+    
+    func load<T: Decodable>(_ filename: String) ->T {
+        let data: Data
+        
+        guard let file = Bundle.main.url(forResource: filename, withExtension: nil)
+            else { fatalError("Couldn't find \(filename) in main bundle")
+        }
+        
+        do {
+            data = try Data(contentsOf: file)
+        } catch  {
+            fatalError("Couldn't load \(filename) from main bundle:\n\(error)")
+        }
+        
+        do {
+            let decoder = JSONDecoder()
+            return try decoder.decode(T.self, from: data)
+        } catch {
+            fatalError("Couldn't parse \(filename) as \(T.self):\n\(error)")
+        }
+    }
+    
+    // MARK: - FILTER
     func resetFilter() {
         selectedGenres = []
         selectedCountries = []
@@ -143,7 +230,6 @@ final class StationListModelView: ObservableObject {
         }
         
         setStationList()
-        
         setShowResetFilterButton()
     }
     

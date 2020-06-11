@@ -1,0 +1,23 @@
+[
+	{
+        "id": "id-1",
+        "countryCode": "US",
+        "title": "Amazing Smooth and Jazz",
+        "logo": "https://s3soft.com/wp-content/uploads/2020/03/logo-1.png",
+        "streamURL": "https://mainstream.amazingradios.com:8010/jazz128",
+        "desc": "Radio description",
+        "status": true,
+        "genres": ["Pop", "Talk"]
+	},
+    {
+        "id": "id-2",
+        "countryCode": "US",
+        "title": ".977 Today's Hits",
+        "logo": "https://s3soft.com/wp-content/uploads/2020/03/logo-1.png",
+        "streamURL": "https://playerservices.streamtheworld.com/api/livestream-redirect/977_HITSAAC_SC",
+        "desc": "Radio description",
+        "status": true,
+        "genres": ["Pop", "Top40"]
+    },
+    
+]

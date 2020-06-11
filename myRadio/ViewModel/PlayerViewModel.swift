@@ -203,8 +203,10 @@ final class PlayerViewModel: NSObject, ObservableObject {
     }
 
     func stopRecording(){
-        let number = getAllRecordings().count + 1
-        self.saveRecordingWithUserProvidedName(name: "\(number).mp3")
+        let number = getAllRecordings().count
+        let randomInt = Int.random(in: 11..<99)
+        let random_name = "\(number)-\(randomInt)"
+        self.saveRecordingWithUserProvidedName(name: "\(random_name).mp3")
         isRecording = false
     }
     

@@ -11,5 +11,9 @@ target 'myRadio' do
   pod 'FlagKit'
   
   pod 'Firebase/Analytics'
+  
+  pod 'Firebase/Firestore'
+  pod 'FirebaseFirestoreSwift'
+  pod 'CodableFirebase'
 
 end

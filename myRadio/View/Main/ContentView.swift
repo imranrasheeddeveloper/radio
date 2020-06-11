@@ -14,14 +14,7 @@ struct ContentView: View {
     // MARK: - PROPERTIES
     @EnvironmentObject var stationListViewModel: StationListModelView
     @EnvironmentObject var playerViewModel: PlayerViewModel
-    @State private var searchText = ""
     
-    var foreverAnimation: Animation {
-        Animation.linear(duration: 2.0)
-            .repeatForever(autoreverses: false)
-    }
-    
-    let size:CGFloat = 40
     // MARK: - VIEW
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -35,39 +28,14 @@ struct ContentView: View {
                 
                 Divider()
                 
-                FilterView()
-                    .padding(.bottom, 10)
+                if self.stationListViewModel.dataIsLoading == false{
+                     FilterView()
+                        .padding(.bottom, 10)
+                }
                 
                 Divider()
 
-
-                ScrollView {
-                    if self.stationListViewModel.dataIsLoading {
-                         ActivityIndicator()
-                         .frame(width:30, height: 30)
-                         .foregroundColor(.orange)
-                    }
-                    
-                    VStack(alignment: .leading, spacing: 0) {
-                        
-                        SearchBarView(text: $searchText)
-                            .padding(.vertical, 10)
-                        
-                        ForEach(stationList.filter({ searchText.isEmpty ? true : $0.title.contains(searchText) })) { item in
-                            Button(action: {
-                                self.playerViewModel.streamStation(station: item)
-                            }) {
-                                StationRowView(station: item)
-                                    .padding(.vertical, 5)
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                            .background(self.playerViewModel.isStationPlaying(stationId: item.id) ? Color("ColorStationRowShadow") : Color.clear)
-
-                            Divider()
-                            
-                        }
-                    }
-                }
+                StationListView()
                 
                 if showAds {
                     BannerVC()

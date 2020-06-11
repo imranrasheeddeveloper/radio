@@ -11,3 +11,6 @@ import Foundation
 
 let keyFavorites = "favorites"
 
+// MARK: FIRESTORE COLLECTION NAMES
+let FIRStoreStationsCollection = "stations"
+
