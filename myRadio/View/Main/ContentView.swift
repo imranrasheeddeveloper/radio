@@ -37,7 +37,7 @@ struct ContentView: View {
 
                 StationListView()
                 
-                if showAds {
+                if showBannerAds {
                     BannerVC()
                         .frame(width: kGADAdSizeBanner.size.width, height: kGADAdSizeBanner.size.height, alignment: .center)
                 }

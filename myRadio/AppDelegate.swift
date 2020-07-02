@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import GoogleMobileAds
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         S3AppRater.usesUntilPrompt = usesUntilPrompt
         S3AppRater.launch()
+        
+        
+        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = ["b0bf12775992829d577305abf513437d"];
         
         return true
     }

@@ -8,18 +8,25 @@
 
 import SwiftUI
 
-
-
 struct PlayButton: View {
 
     // MARK: - PROPERTIES
     @EnvironmentObject var playerViewModel: PlayerViewModel
-    var small: Bool = false
+
+    var interstitial:Interstitial = Interstitial()
+
     // MARK: - VIEW
     var body: some View {
         
         Button(action: {
             self.playerViewModel.togglePlaying()
+            
+            if( self.playerViewModel.isPlaying == false) {
+                if(showInsterstitialAds) {
+                    self.interstitial.showAd()
+                }
+            }
+            
         }) {
             Image(systemName: playerViewModel.isPlaying ? "pause.circle.fill" : "play.circle.fill")
                 .resizable()
@@ -35,7 +42,7 @@ struct PlayButton: View {
 struct PlayButton_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PlayButton(small: false)
+            PlayButton()
                 .background(Color(UIColor.systemBackground))
                 .environment(\.colorScheme, .dark)
                 .previewLayout(.fixed(width: 200, height: 200))
@@ -43,7 +50,7 @@ struct PlayButton_Previews: PreviewProvider {
             
 
 
-            PlayButton(small: false)
+            PlayButton()
                 .background(Color(UIColor.systemBackground))
                 .environment(\.colorScheme, .light)
                 .previewLayout(.fixed(width: 200, height: 200))

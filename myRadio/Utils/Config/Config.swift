@@ -14,8 +14,10 @@ import UIKit
 // TODO: You should also replace ID in Info.plist file, for more detail plase read user manual
 //---GOOGLE ADMOB AND IN-APP PURCHASE IDS HERE---//
 let adMobBannerID = "ca-app-pub-3940256099942544/2934735716"
+let adMobInsterstitialID = "ca-app-pub-3940256099942544/4411468910"
 // Set it false if you don't want to show ads
-let showAds = false
+let showBannerAds = true
+let showInsterstitialAds = true
 
 // MARK: - DATABASE
 // DATA Source
@@ -29,10 +31,10 @@ enum DatabaseSource {
 ///
 // Please comment/uncomment which data source that you will use
 ///
-//let databaseSource: DatabaseSource = DatabaseSource.FIREBASE_FIRESTORE
+let databaseSource: DatabaseSource = DatabaseSource.FIREBASE_FIRESTORE
 //let databaseSource: DatabaseSource = DatabaseSource.REMOTE_CSV
 //let databaseSource: DatabaseSource = DatabaseSource.LOCAL_JSON
-let databaseSource: DatabaseSource = DatabaseSource.REMOTE_JSON
+//let databaseSource: DatabaseSource = DatabaseSource.REMOTE_JSON
 
 // Remote CSV File
 let csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR7B_jzm-N-PVek6OfWGzSNcWml_-QIor5aM72j-vhSITo4VyYQCO_Kae0iG3SN8Ll7MPHPul_Uwszk/pub?output=csv"
