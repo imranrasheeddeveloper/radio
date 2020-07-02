@@ -16,7 +16,8 @@ import UIKit
 let adMobBannerID = "ca-app-pub-3940256099942544/2934735716"
 let adMobInsterstitialID = "ca-app-pub-3940256099942544/4411468910"
 // Set it false if you don't want to show ads
-let showBannerAds = true
+let showBannerAds = true /// Radio listing screen
+let showBannerLargeAds = true /// In the player screen
 let showInsterstitialAds = true
 
 // MARK: - DATABASE

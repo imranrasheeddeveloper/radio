@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import GoogleMobileAds
 
 struct PlayerView: View {
     // MARK: - PROPERTIES
@@ -48,6 +49,11 @@ struct PlayerView: View {
                     .multilineTextAlignment(.center)
                 
                 Spacer()
+                
+                if showBannerLargeAds {
+                    BannerLargeVC()
+                        .frame(width:  kGADAdSizeLargeBanner.size.width, height: kGADAdSizeLargeBanner.size.height, alignment: .center)
+                }
                 
                 if (showLogoInPlayerScreen) {
                     Image("logo_player")
