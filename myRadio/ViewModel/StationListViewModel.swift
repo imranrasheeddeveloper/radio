@@ -79,6 +79,9 @@ final class StationListModelView: ObservableObject {
             case DatabaseSource.REMOTE_CSV:
                 readDataFromRemoteCSV()
                 break;
+            case DatabaseSource.REMOTE_JSON:
+                readFromRemoteJson()
+                break;
             case DatabaseSource.LOCAL_JSON:
                 readFromLocal()
                 break;
@@ -181,17 +184,44 @@ final class StationListModelView: ObservableObject {
         }
     }
     
+    // MARK: REMOTE JSON
+    func readFromRemoteJson() {
+        
+        if let url = URL(string: jsonUrl) {
+            let urlSession = URLSession(configuration: .default).dataTask(with: url) { (data, response, error) in
+                if let error = error {
+                    fatalError("Couldn't fetch remote json file. Error: \(error)")
+                } else if let data = data {
+                    do {
+                        let decoder = JSONDecoder()
+                        stationList = try decoder.decode([Station].self, from: data)
+                        // Configure genres, countries, favorites
+                        self.configureLoadedData()
+                        DispatchQueue.main.async {
+                            self.dataIsLoading = false
+                        }
+                    } catch {
+                        fatalError("Couldn't parse remote json file")
+                    }
+                } else {
+                    fatalError("Couldn't fetch data")
+                }
+            }
+            
+            urlSession.resume()
+        }
+   }
     
     // MARK: LOCAL DATA
     func readFromLocal() {
-        stationList = load(dataJsonFile)
+        stationList = loadLocalJson(dataJsonFile)
     
         // Configure genres, countries, favorites
         configureLoadedData()
         self.dataIsLoading = false
     }
     
-    func load<T: Decodable>(_ filename: String) ->T {
+    func loadLocalJson<T: Decodable>(_ filename: String) ->T {
         let data: Data
         
         guard let file = Bundle.main.url(forResource: filename, withExtension: nil)
