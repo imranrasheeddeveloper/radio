@@ -8,17 +8,20 @@
 
 import SwiftUI
 
+
+import SwiftUI
+
 struct RecordingsView: View {
     // MARK: - PROPERTIES
     @EnvironmentObject var playerViewModel: PlayerViewModel
     @State private var showPlayer: Bool = false
     @State private var showingActionSheet = false
+    @State private var showRecordName = false
+
     
     // MARK: - VIEW
     var body: some View {
         VStack {
-            Text("Recordings")
-                .modifier(TitleModifier())
             
             Text("You can record audio in the radio station ")
                 .multilineTextAlignment(.center)
@@ -27,34 +30,57 @@ struct RecordingsView: View {
             Button(action: {
                 if self.playerViewModel.isRecording {
                     self.playerViewModel.stopRecording()
+                    self.showRecordName.toggle()
                 } else {
                     self.playerViewModel.startRecording()
                 }
             }) {
-                Text(playerViewModel.isRecording ? "Stop" : "Start Recording")
-                    .font(.system(.footnote, design: .rounded))
-                    .fontWeight(.light)
-                    .padding()
-                    .background(
-                        Capsule()
-                            .foregroundColor(Color(COLOR_Genre_Background))
-                    )
-            }
-            .buttonStyle(PlainButtonStyle())
-            
-            List(self.playerViewModel.getAllRecordings(), id: \.self) { recording in
-                HStack {
-                    Button(action: {
-                        self.playerViewModel.stopPlaying()
-                        self.showPlayer.toggle()
-                    }) {
-                        Text("\(recording.lastPathComponent)")
-                    }.sheet(isPresented: self.$showPlayer) {
-                        RecordingPlayerView(audioUrl: recording)
-                    }
+                if(playerViewModel.isRecording) {
+                    MicrophoneAnimationView()
+                } else {
+                    MicrophoneView()
                 }
             }
+            .buttonStyle(PlainButtonStyle())
+            .sheet(isPresented: $showRecordName) {
+                RecordingNameView()
+                    .environmentObject(self.playerViewModel)
+            }
+            
+            NavigationView {
+                List {
+                    ForEach(self.playerViewModel.recordings, id: \.self) { recording in
+                        HStack {
+                            Button(action: {
+                                self.playerViewModel.stopPlaying()
+                                self.showPlayer.toggle()
+                            }) {
+                                HStack {
+                                    Text("\(recording.lastPathComponent)")
+                                    Spacer()
+                                    Image(systemName: "play.circle")
+                                        .imageScale(.large)
+                                }
+                            }.sheet(isPresented: self.$showPlayer) {
+                                RecordingPlayerView(audioUrl: recording)
+                            }
+                        }
+                    } // ForEach
+                    .onDelete(perform: delete)
+                } // List
+                .navigationBarTitle("Recordings")
+                .navigationBarItems(trailing: EditButton())
+            } // NavigationView
+            .navigationViewStyle(StackNavigationViewStyle())
         }
+    }
+    
+    func delete(at offsets: IndexSet) {
+        var urlsToDelete = [URL]()
+        for index in offsets {
+            urlsToDelete.append(playerViewModel.recordings[index])
+        }
+        playerViewModel.deleteRecording(urlsToDelete: urlsToDelete)
     }
 }
 

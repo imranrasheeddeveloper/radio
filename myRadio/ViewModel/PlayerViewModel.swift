@@ -35,6 +35,7 @@ final class PlayerViewModel: NSObject, ObservableObject {
     var player: AVPlayer!
     var playerItem: CachingPlayerItem!
     var recordingName: String?
+    @Published var recordings : [URL] = []
 
     // MARK: - SETUP
     override init() {
@@ -186,6 +187,8 @@ final class PlayerViewModel: NSObject, ObservableObject {
     
     // MARK: - RECORDER
     
+    // MARK: - RECORDER
+    
     func resetRecordingSetting(){
         playerItem.stopDownloading()
         recordingName = nil
@@ -193,8 +196,8 @@ final class PlayerViewModel: NSObject, ObservableObject {
     }
     
     func startRecording(){
-        recordingName = "\(Date().timeIntervalSince1970).mp3"
-        let url = URL(string: self.station.streamURL)!
+        recordingName = "\(Date().toString(dateFormat: "dd-MM-YY HH:mm:ss")).mp3"
+        let url = URL(string: station.streamURL)!
         playerItem = CachingPlayerItem(url: url, recordingName: recordingName ?? "default.mp3")
         player = AVPlayer(playerItem: playerItem)
         player.automaticallyWaitsToMinimizeStalling = false
@@ -203,11 +206,9 @@ final class PlayerViewModel: NSObject, ObservableObject {
     }
 
     func stopRecording(){
-        let number = getAllRecordings().count
-        let randomInt = Int.random(in: 11..<99)
-        let random_name = "\(number)-\(randomInt)"
-        self.saveRecordingWithUserProvidedName(name: "\(random_name).mp3")
+        self.saveRecordingWithUserProvidedName(name: recordingName!)
         isRecording = false
+        fetchRecordings()
     }
     
     func saveRecordingWithUserProvidedName(name: String){
@@ -263,19 +264,59 @@ final class PlayerViewModel: NSObject, ObservableObject {
         
     }
     
-    func getAllRecordings() -> [URL]{
-           
-           var recordingURLs = [URL]()
-           do {
-               let documentsURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-               let docs = try FileManager.default.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: [], options:  [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
-               let recordings = docs.filter{ $0.pathExtension == "mp3" }
-               recordingURLs = recordings
-           } catch {
-               print(error)
-           }
-           return recordingURLs
-       }
+    private func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+    
+    func updateLastRecordName(name: String) {
+        
+        var invalidCharacters = CharacterSet(charactersIn: ":/")
+        invalidCharacters.formUnion(.newlines)
+        invalidCharacters.formUnion(.illegalCharacters)
+        invalidCharacters.formUnion(.controlCharacters)
+
+        let newFilename = name
+            .components(separatedBy: invalidCharacters)
+            .joined(separator: "")
+        
+        if newFilename.count > 0 {
+            // Move the last recorded file with the new name
+            do {
+                let newURL = getDocumentsDirectory().appendingPathComponent("\(newFilename).mp3")
+                let lastRecordedURL = getDocumentsDirectory().appendingPathComponent(recordingName!)
+                try FileManager.default.moveItem(at: lastRecordedURL, to: newURL)
+            } catch {
+                print("File could not be deleted!")
+            }
+        }
+        
+        fetchRecordings()
+        
+    }
+    
+    func fetchRecordings() {
+        do {
+           let documentsURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+           let docs = try FileManager.default.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: [], options:  [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
+           recordings = docs.filter{ $0.pathExtension == "mp3" }
+        } catch {
+           print(error)
+        }
+    }
+    
+    func deleteRecording(urlsToDelete: [URL]) {
+        for url in urlsToDelete {
+            print(url)
+            do {
+               try FileManager.default.removeItem(at: url)
+            } catch {
+                print("File could not be deleted!")
+            }
+        }
+        
+        fetchRecordings()
+    }
     
     
 }

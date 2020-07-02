@@ -49,7 +49,7 @@ let dataJsonFile = "station_list.json" /// File is located in Resources folder
 // MARK: - OPTIONS
 
 // (Note: You should set "logo_player" in the Assets.xcassets if you set true)
-let showLogoInPlayerScreen = false
+let showLogoInPlayerScreen = true
 
 // Open full player screen when tap to station in main list
 let openFullPlayerViewAuto = false
