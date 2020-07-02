@@ -14,3 +14,6 @@ let keyFavorites = "favorites"
 // MARK: FIRESTORE COLLECTION NAMES
 let FIRStoreStationsCollection = "stations"
 
+
+// MARK: App Rater
+let usesUntilPrompt = 2 /// Shows review request if users launch more than usesUntilPrompt times.

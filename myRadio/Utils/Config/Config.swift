@@ -55,6 +55,10 @@ let openFullPlayerViewAuto = false
 // Artwork Image Size
 let artworkSize:CGFloat = 180
 
+
+// MARK: App review
+let appID = "1515483035" /// You can find the app id in the appstoreconnect
+
 // MARK: - LOCALIZATIONS
 // Sharing confiigurations
 let shareMessage: String = "I am listening this station on the myRadio: "

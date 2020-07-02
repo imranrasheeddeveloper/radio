@@ -17,6 +17,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         
+        S3AppRater.usesUntilPrompt = usesUntilPrompt
+        S3AppRater.launch()
+        
         return true
     }
 
