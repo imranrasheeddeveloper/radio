@@ -2,8 +2,8 @@
 //  SleepButton.swift
 //  myRadio
 //
-//  Created by muhammed on 10.06.2020.
-//  Copyright © 2020 S3soft. All rights reserved.
+//  Created by VVHALITI on 2020.
+//  Copyright © 2020 VVHALITI. All rights reserved.
 //
 
 import SwiftUI

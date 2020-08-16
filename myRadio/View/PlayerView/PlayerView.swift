@@ -2,8 +2,8 @@
 //  PlayerView.swift
 //  myRadio
 //
-//  Created by mt on 24.05.2020.
-//  Copyright © 2020 S3soft. All rights reserved.
+//  Created by VVHALITI on 2020.
+//  Copyright © 2020 VVHALITI. All rights reserved.
 //
 
 import SwiftUI
@@ -20,7 +20,7 @@ struct PlayerView: View {
     // MARK: - VIEW
     var body: some View {
         ZStack {
-            
+            Color.orange.opacity(0.2).edgesIgnoringSafeArea(.all)
             VStack(alignment: .center, spacing: 10) {
                         
                 if (self.playerViewModel.track.artworkURL != nil) {
@@ -89,14 +89,23 @@ struct PlayerView: View {
                 }
             } // VStack
             .padding(.vertical, 20)
-        } // ZStack
+        }.onAppear(perform: loadNotification) // ZStack
         
     }
+    private func loadNotification() {
+      //  if !Constant.isItPlaying{
+            //self.playerViewModel.togglePlaying()
+             //Constant.isItPlaying = true
+       // }
+       }
 }
 
 struct PlayerView_Previews: PreviewProvider {
     static var previews: some View {
         PlayerView(station: sampleStationList[0])
             .environmentObject(PlayerViewModel())
+    
     }
+   
+  
 }

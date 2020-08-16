@@ -2,8 +2,8 @@
 //  InsterstitialVC.swift
 //  myRadio
 //
-//  Created by muhammed on 2.07.2020.
-//  Copyright © 2020 S3soft. All rights reserved.
+//  Created by VVHALITI on 2020.
+//  Copyright © 2020 VVHALITI. All rights reserved.
 //
 
 import Foundation
@@ -12,19 +12,21 @@ import GoogleMobileAds
 
 final class Interstitial:NSObject, GADInterstitialDelegate{
     var interstitial:GADInterstitial = GADInterstitial(adUnitID: adMobInsterstitialID)
-    
+
     override init() {
         super.init()
         LoadInterstitial()
     }
-    
+     
     func LoadInterstitial(){
         let req = GADRequest()
         self.interstitial.load(req)
         self.interstitial.delegate = self
+    
     }
     
-    func showAd(){
+    func showAd() -> Bool{
+        
         if self.interstitial.isReady{
             
             let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
@@ -35,11 +37,15 @@ final class Interstitial:NSObject, GADInterstitialDelegate{
                 }
 
                 self.interstitial.present(fromRootViewController: topController)
+                
+                return true
             }
         }
        else{
            print("Not Ready")
        }
+        
+        return false
     }
     
     func interstitialDidDismissScreen(_ ad: GADInterstitial) {

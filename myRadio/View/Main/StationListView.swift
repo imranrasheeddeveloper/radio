@@ -2,12 +2,12 @@
 //  StationListView.swift
 //  myRadio
 //
-//  Created by muhammed on 11.06.2020.
-//  Copyright © 2020 S3soft. All rights reserved.
+//  Created by VVHALITI on 2020.
+//  Copyright © 2020 VVHALITI. All rights reserved.
 //
 
 import SwiftUI
-
+import AVFoundation
 struct StationListView: View {
     
     // MARK: - PROPERTIES
@@ -15,6 +15,19 @@ struct StationListView: View {
     @EnvironmentObject var playerViewModel: PlayerViewModel
     @State private var searchText = ""
     @State private var showModal: Bool = false
+    private var avPlayer: AVPlayer?
+    
+    private var interstitial:Interstitial = Interstitial()
+    @State private var selectedStation: Station?
+    @State private var showedInsterstital = false
+    
+
+    func playStreaming() {
+        self.playerViewModel.streamStation(station: selectedStation!)
+        if openFullPlayerViewAuto {
+            self.showModal.toggle()
+        }
+    }
     
     // MARK: - VIEW
     var body: some View {
@@ -30,11 +43,27 @@ struct StationListView: View {
                         .padding(.vertical, 10)
                     
                     ForEach(stationList.filter({ searchText.isEmpty ? true : $0.title.contains(searchText) })) { item in
+                        
                         Button(action: {
-                            self.playerViewModel.streamStation(station: item)
+                            self.selectedStation = item
                             
-                            if openFullPlayerViewAuto {
-                                self.showModal.toggle()
+                            // Pause the music if player is active
+                            if self.playerViewModel.isPlaying {
+                                self.playerViewModel.togglePlaying()
+                            }
+                            
+                            // Check ads config is enabled
+                            if(showInsterstitialAds) {
+                                if(self.interstitial.showAd()) {
+                                    // Don't start streaming until ad dismissed
+                                    self.showedInsterstital = true
+                                } else {
+                                    // If there is no ads, continue to play
+                                    self.playStreaming()
+                                }
+                            } else {
+                                // If ads config is disabled continue to play
+                                self.playStreaming()
                             }
                             
                         }) {
@@ -54,6 +83,15 @@ struct StationListView: View {
                 } // VStack
             } // if-else
         } // ScrollView
+        .onAppear() {
+            // Show ads, dont start streaming until ads dismissed
+           
+            if self.showedInsterstital {
+                self.showedInsterstital = false
+                self.playStreaming()
+            }
+        }
+        
     } // body
 }
 

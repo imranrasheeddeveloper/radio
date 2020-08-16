@@ -2,12 +2,13 @@
 //  AppDelegate.swift
 //  myRadio
 //
-//  Created by mt on 23.05.2020.
-//  Copyright © 2020 S3soft. All rights reserved.
+//  Created by VVHALITI on 2020.
+//  Copyright © 2020 VVHALITI. All rights reserved.
 //
 
 import UIKit
 import Firebase
+import FirebaseCore
 import GoogleMobileAds
 
 @UIApplicationMain
@@ -17,12 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         FirebaseApp.configure()
-        
         S3AppRater.usesUntilPrompt = usesUntilPrompt
         S3AppRater.launch()
-        
-        
-        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = ["b0bf12775992829d577305abf513437d"];
         
         return true
     }

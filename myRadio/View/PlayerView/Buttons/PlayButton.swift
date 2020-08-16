@@ -2,8 +2,8 @@
 //  PlayButton.swift
 //  myRadio
 //
-//  Created by muhammed on 28.05.2020.
-//  Copyright © 2020 S3soft. All rights reserved.
+//  Created by VVHALITI on 2020.
+//  Copyright © 2020 VVHALITI. All rights reserved.
 //
 
 import SwiftUI
@@ -13,7 +13,7 @@ struct PlayButton: View {
     // MARK: - PROPERTIES
     @EnvironmentObject var playerViewModel: PlayerViewModel
 
-    var interstitial:Interstitial = Interstitial()
+   
 
     // MARK: - VIEW
     var body: some View {
@@ -22,9 +22,7 @@ struct PlayButton: View {
             self.playerViewModel.togglePlaying()
             
             if( self.playerViewModel.isPlaying == false) {
-                if(showInsterstitialAds) {
-                    self.interstitial.showAd()
-                }
+               
             }
             
         }) {

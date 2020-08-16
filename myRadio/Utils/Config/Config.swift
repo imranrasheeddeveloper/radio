@@ -2,8 +2,8 @@
 //  Config.swift
 //  myRadio
 //
-//  Created by mt on 25.05.2020.
-//  Copyright © 2020 S3soft. All rights reserved.
+//  Created by VVHALITI on 2020.
+//  Copyright © 2020 VVHALITI. All rights reserved.
 //
 
 import Foundation
@@ -32,16 +32,16 @@ enum DatabaseSource {
 ///
 // Please comment/uncomment which data source that you will use
 ///
-let databaseSource: DatabaseSource = DatabaseSource.FIREBASE_FIRESTORE
+//let databaseSource: DatabaseSource = DatabaseSource.FIREBASE_FIRESTORE
 //let databaseSource: DatabaseSource = DatabaseSource.REMOTE_CSV
 //let databaseSource: DatabaseSource = DatabaseSource.LOCAL_JSON
-//let databaseSource: DatabaseSource = DatabaseSource.REMOTE_JSON
+let databaseSource: DatabaseSource = DatabaseSource.REMOTE_JSON
 
 // Remote CSV File
-let csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR7B_jzm-N-PVek6OfWGzSNcWml_-QIor5aM72j-vhSITo4VyYQCO_Kae0iG3SN8Ll7MPHPul_Uwszk/pub?output=csv"
+let csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOuFnb7MSUcrIfSrrBtJ-nYOC7uRANWGCpaWOoli1e0GJwKNkRqBVR2p0xnbthGMbwtasqLX7fv8eW/pub?output=csv"
 
 // Remote json file
-let jsonUrl = "https://s3soft.com/codecanyon/assets/files/station_list.json"
+let jsonUrl = "https://dl.dropbox.com/s/xzd7l5zecmgitwz/GhanaRadio.json?dl=0"
 
 // Local json file name
 let dataJsonFile = "station_list.json" /// File is located in Resources folder
@@ -53,19 +53,19 @@ let dataJsonFile = "station_list.json" /// File is located in Resources folder
 let showLogoInPlayerScreen = true
 
 // Open full player screen when tap to station in main list
-let openFullPlayerViewAuto = false
+let openFullPlayerViewAuto = true
 
 // Artwork Image Size
 let artworkSize:CGFloat = 180
 
 
 // MARK: App review
-let appID = "1515483035" /// You can find the app id in the appstoreconnect
+let appID = "1046399080" /// You can find the app id in the appstoreconnect
 
 // MARK: - LOCALIZATIONS
 // Sharing confiigurations
-let shareMessage: String = "I am listening this station on the myRadio: "
-let shareURL: String = "https://apps.apple.com/app/id1515483035"
+let shareMessage: String = "I am listening this station on the Ghana Radio: "
+let shareURL: String = "https://apps.apple.com/us/app/id1046399080"
 
 // Texts
 let favoritesText = "Favorites"

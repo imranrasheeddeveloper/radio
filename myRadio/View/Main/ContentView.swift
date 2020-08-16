@@ -2,12 +2,14 @@
 //  ContentView.swift
 //  myRadio
 //
-//  Created by mt on 23.05.2020.
-//  Copyright © 2020 S3soft. All rights reserved.
+//  Created by VVHALITI on 2020.
+//  Copyright © 2020 VVHALITI. All rights reserved.
 //
 
 import SwiftUI
 import GoogleMobileAds
+
+
 
 struct ContentView: View {
     
@@ -16,9 +18,13 @@ struct ContentView: View {
     @EnvironmentObject var playerViewModel: PlayerViewModel
     
     // MARK: - VIEW
+    @State var isDrawerOpen: Bool = false
+      
     var body: some View {
+        
         ZStack(alignment: .bottom) {
-
+            
+            Color.orange.opacity(0.2).edgesIgnoringSafeArea(.all)
             VStack(alignment: .center, spacing: 0) {
                 
                 if stationListViewModel.favoriteStationList.count > 0 {
@@ -46,6 +52,7 @@ struct ContentView: View {
                     VStack (alignment: .center, spacing: 0, content: {
                         ControllerView()
                             .environmentObject(stationListViewModel)
+                        
                     })
                 }
                 
@@ -62,3 +69,4 @@ struct ContentView_Previews: PreviewProvider {
             .environmentObject(PlayerViewModel())
     }
 }
+
