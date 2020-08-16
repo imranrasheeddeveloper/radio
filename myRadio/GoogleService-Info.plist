@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>290745955062-r2hqs7tmfspljnmnh3npdi7a2u35egdb.apps.googleusercontent.com</string>
+	<string>450895586499-ftujeaht9927u5h8fq1ptsm2nqke0rmu.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.290745955062-r2hqs7tmfspljnmnh3npdi7a2u35egdb</string>
+	<string>com.googleusercontent.apps.450895586499-ftujeaht9927u5h8fq1ptsm2nqke0rmu</string>
 	<key>API_KEY</key>
-	<string>AIzaSyD1h06gH7wNkw6_Uv0dj0MoVm02Zu5fd2M</string>
+	<string>AIzaSyANDzDmtQztsZ6khwLRVicB12BiudBG-Ng</string>
 	<key>GCM_SENDER_ID</key>
-	<string>290745955062</string>
+	<string>450895586499</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.s3soft.myRadio</string>
+	<string>com.vvhaliti.GhanaRadio</string>
 	<key>PROJECT_ID</key>
-	<string>myradio-638e3</string>
+	<string>ghanaradio-61778</string>
 	<key>STORAGE_BUCKET</key>
-	<string>myradio-638e3.appspot.com</string>
+	<string>ghanaradio-61778.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:290745955062:ios:bed7f994888291dca432d7</string>
+	<string>1:450895586499:ios:4b15af46fbac4b7debee76</string>
 	<key>DATABASE_URL</key>
-	<string>https://myradio-638e3.firebaseio.com</string>
+	<string>https://ghanaradio-61778.firebaseio.com</string>
 </dict>
 </plist>

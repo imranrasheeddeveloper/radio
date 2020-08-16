@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5386FC09247977F600AC71FF"
-               BuildableName = "myRadio.app"
+               BuildableName = "Radio Shqip.app"
                BlueprintName = "myRadio"
                ReferencedContainer = "container:myRadio.xcodeproj">
             </BuildableReference>
@@ -45,11 +45,20 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5386FC09247977F600AC71FF"
-            BuildableName = "myRadio.app"
+            BuildableName = "Radio Shqip.app"
+            BlueprintName = "RadioShqip"
+            ReferencedContainer = "container:RadioShqip.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "5386FC09247977F600AC71FF"
+            BuildableName = "Radio Shqip.app"
             BlueprintName = "myRadio"
             ReferencedContainer = "container:myRadio.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -62,7 +71,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5386FC09247977F600AC71FF"
-            BuildableName = "myRadio.app"
+            BuildableName = "Radio Shqip.app"
             BlueprintName = "myRadio"
             ReferencedContainer = "container:myRadio.xcodeproj">
          </BuildableReference>
