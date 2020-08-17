@@ -19,7 +19,7 @@ struct PreviousButton: View {
             self.playerViewModel.streamPreviousStation()
         }) {
             Image(systemName: "backward.end.fill")
-                .foregroundColor(.gray)
+                .foregroundColor(.orange)
                 .padding(20)
                 .modifier(PlayerControllerButtonModifier())
         }

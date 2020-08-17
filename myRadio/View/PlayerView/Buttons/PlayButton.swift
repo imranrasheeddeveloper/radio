@@ -30,7 +30,7 @@ struct PlayButton: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width:30, height:30)
-                .foregroundColor(.gray)
+                .foregroundColor(.orange)
                 .padding(30)
                 .modifier(PlayerControllerButtonModifier())
         }
