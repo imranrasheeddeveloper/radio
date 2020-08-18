@@ -26,13 +26,17 @@ struct PlayButton: View {
             }
             
         }) {
-            Image(systemName: playerViewModel.isPlaying ? "pause.circle.fill" : "play.circle.fill")
-                .resizable()
-                .scaledToFit()
-                .frame(width:30, height:30)
-                .foregroundColor(.orange)
-                .padding(30)
-                .modifier(PlayerControllerButtonModifier())
+            Image(playerViewModel.isPlaying ? "pause" : "play").renderingMode(.original)
+//                .resizable()
+//                .scaledToFit()
+//                .frame(width:30, height:30)
+//                .foregroundColor(.orange)
+//                .padding(30)
+//                .modifier(PlayerControllerButtonModifier())
+            
+            .resizable()
+            .frame(width: 65, height: 65)
+            .padding(25)
         }
     }
 }

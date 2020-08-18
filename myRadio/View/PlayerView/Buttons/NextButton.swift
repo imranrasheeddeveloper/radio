@@ -18,10 +18,14 @@ struct NextButton: View {
         Button(action: {
             self.playerViewModel.streamNextStation()
         }) {
-            Image(systemName: "forward.end.fill")
-                .foregroundColor(.gray)
-                .padding(20)
-                .modifier(PlayerControllerButtonModifier())
+//            Image(systemName: "forward.end.fill")
+//                .foregroundColor(.gray)
+//                .padding(20)
+//                .modifier(PlayerControllerButtonModifier())
+            Image("next").renderingMode(.original)
+            .resizable()
+            .frame(width: 50, height: 50)
+            .padding(20)
         }
     }
 }

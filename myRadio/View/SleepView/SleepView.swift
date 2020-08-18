@@ -36,8 +36,6 @@ struct SleepView: View {
                 }) {
                     Text("\(item) min")
                 }
-                
-                
             }
         }
         

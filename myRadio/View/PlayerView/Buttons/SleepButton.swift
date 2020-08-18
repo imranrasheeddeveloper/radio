@@ -30,8 +30,8 @@ struct SleepButton: View {
                 .foregroundColor(self.playerViewModel.isSleepMode ? Color(UIColor.systemGreen) :  Color(COLOR_Action_Buttons))
                 .padding(10)
         }.sheet(isPresented: $showSleepModal) {
-            //SleepView()
-            SleeperView()
+            SleepView()
+            //SleeperView()
                 .environmentObject(self.playerViewModel)
         }
     }

@@ -11,16 +11,31 @@ import SwiftUI
 struct SleeperView: View {
     var colors = ["Red", "Green", "Blue", "Tartan"]
     @State private var selectedColor = 0
-
+    @EnvironmentObject var playerViewModel: PlayerViewModel
+       @Environment(\.presentationMode) var presentationMode
+       private let minutes: [String] = ["1", "5", "10", "15", "20", "25", "30", "40", "45", "50", "60", "75", "90", "120", "150", "180"]
+    private let hapticImpact = UIImpactFeedbackGenerator(style: .medium)
+        
     var body: some View {
        VStack {
-          Picker(selection: $selectedColor, label: Text("Please choose a color")) {
-             ForEach(0 ..< colors.count) {
-                Text(self.colors[$0])
+        Picker(selection: $selectedColor, label: Text("")) {
+             ForEach(0 ..< minutes.count) {
+                Text(self.minutes[$0])
+                
              }
           }
-          Text("You selected: \(colors[selectedColor])")
+        .labelsHidden()
+        .clipped()
+//          Text("You selected: \(minutes[selectedColor]) Minutes")
+         
+       
        }
+    }
+    
+  public  func svae() {
+        self.hapticImpact.impactOccurred()
+        //self.playerViewModel.setTimer(countDown: Int(minutes[$0]) ?? 0)
+        self.presentationMode.wrappedValue.dismiss()
     }
 }
 
@@ -29,4 +44,5 @@ struct SleeperView_Previews: PreviewProvider {
     static var previews: some View {
         SleeperView()
     }
+
 }

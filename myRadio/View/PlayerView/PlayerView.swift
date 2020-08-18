@@ -15,21 +15,43 @@ struct PlayerView: View {
     
     @EnvironmentObject var playerViewModel: PlayerViewModel
     @EnvironmentObject var stationListViewModel: StationListModelView
-    
+    @State private var isAnimating = false
+    @State private var showProgress = false
+    var foreverAnimation: Animation {
+        Animation.linear(duration: 2.0)
+            .repeatForever(autoreverses: false)
+    }
     
     // MARK: - VIEW
     var body: some View {
         ZStack {
             Color.orange.opacity(0.2).edgesIgnoringSafeArea(.all)
             VStack(alignment: .center, spacing: 10) {
-                        
+                
                 if (self.playerViewModel.track.artworkURL != nil) {
                     ImageLoaderView(imageUrl: self.playerViewModel.track.artworkURL!)
                         .frame(width: artworkSize, height: artworkSize, alignment: .center)
+                        .clipShape(Circle())
+                        .shadow(radius: 10)
+                        .overlay(Circle().stroke(Color.orange, lineWidth: 1))
+                        .rotationEffect(Angle(degrees: self.isAnimating ? 360.0 : 0.0))
+                        .animation(self.foreverAnimation)
+                        .onAppear {
+                            self.isAnimating = true
+                            
+                    }
+                    .onDisappear { self.isAnimating = false }
                 } else {
                     ImageLoaderView(imageUrl: station.logo)
                         .frame(width: 100, height: 100, alignment: .center)
-                        .modifier(LogoModifier())
+                        .rotationEffect(Angle(degrees: self.isAnimating ? 360.0 : 0.0))
+                        .animation(self.foreverAnimation)
+                        .onAppear {
+                            self.isAnimating = true
+                            
+                    }
+                    .onDisappear { self.isAnimating = false }
+                    .modifier(LogoModifier())
                 }
                 
                 Text(self.playerViewModel.track.metaTitle())
@@ -57,12 +79,12 @@ struct PlayerView: View {
                 
                 if (showLogoInPlayerScreen) {
                     Image("logo_player")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxHeight: 100)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxHeight: 100)
                 }
-                    
-                    
+                
+                
                 HStack(alignment: .center, spacing: 40) {
                     RecordingButton(size: 30)
                     SleepButton(size: 30)
@@ -88,24 +110,24 @@ struct PlayerView: View {
                     NextButton()
                 }
             } // VStack
-            .padding(.vertical, 20)
+                .padding(.vertical, 20)
         }.onAppear(perform: loadNotification) // ZStack
         
     }
     private func loadNotification() {
-      //  if !Constant.isItPlaying{
-            //self.playerViewModel.togglePlaying()
-             //Constant.isItPlaying = true
-       // }
-       }
+        //  if !Constant.isItPlaying{
+        //self.playerViewModel.togglePlaying()
+        //Constant.isItPlaying = true
+        // }
+    }
 }
 
 struct PlayerView_Previews: PreviewProvider {
     static var previews: some View {
         PlayerView(station: sampleStationList[0])
             .environmentObject(PlayerViewModel())
-    
+        
     }
-   
-  
+    
+    
 }
