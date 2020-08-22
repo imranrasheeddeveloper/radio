@@ -24,16 +24,13 @@ struct ContentView: View {
         ZStack{
             NavigationView{
                 ZStack(alignment: .bottom) {
-                   // Color(hex: "ebecf1").edgesIgnoringSafeArea(.all)
+                    //Color(hex: "ffe976").edgesIgnoringSafeArea(.all)
                     Color.orange.opacity(0.2).edgesIgnoringSafeArea(.all)
-                    
                     VStack(alignment: .center, spacing: 0) {
-                        
                         if stationListViewModel.favoriteStationList.count > 0 {
                             FavoriteListView()
                                 .padding(.bottom, 10)
                         }
-                        
                         Divider()
                         
                         if self.stationListViewModel.dataIsLoading == false{
@@ -105,28 +102,31 @@ struct myMenu : View {
     @EnvironmentObject var playerViewModel: PlayerViewModel
     @State private var showSleeperView: Bool = false
     @State private var showFvrt: Bool = false
+    @State private var aboutBtn: Bool = false
+    @State private var moreApps: Bool = false
+    @State private var showRecordingsModal: Bool = false
     var body: some View {
         VStack(spacing : 25){
+            
             Button(action: {
-                
-                self.showFvrt.toggle()
-                if self.stationListViewModel.favoriteStationList.count > 0 {
-                   // FavoriteListView()
-                }
+                self.showRecordingsModal.toggle()
+
             })
             {
                 VStack(spacing : 8){
-                    Image("heart")
+                    Image("record")
                         .renderingMode(.original)
                         .resizable()
-                        .frame(width : 50 , height: 50)
-                    Text("Favourites")
+                        .frame(width : 100 , height: 100)
+                    Text("Recordings")
                 }
                 
-            }.sheet(isPresented: $showFvrt) {
-                FavoriteListView()
-                    //.environmentObject(self.playerViewModel)
+            }.sheet(isPresented: $showRecordingsModal) {
+                RecordingsView()
+                .environmentObject(self.playerViewModel)
             }
+            
+            
             Button(action: {
                 self.showSleeperView.toggle()
             })
@@ -142,29 +142,43 @@ struct myMenu : View {
                 
             }.sheet(isPresented: $showSleeperView) {
                 SleepView()
-                    .environmentObject(self.playerViewModel)
+                .environmentObject(self.playerViewModel)
             }
+            
+            
             Button(action: {
-                
+                self.aboutBtn.toggle()
             })
             {
                 VStack(spacing : 8){
-                    Image("logo-3")
+                    Image("about")
                         .renderingMode(.original)
                         .resizable()
-                        .frame(width : 50 , height: 50)
+                        .frame(width : 100 , height: 100)
+                    Text("About")
                 }
                 
+            }.sheet(isPresented: $aboutBtn) {
+                About()
+              .environmentObject(self.playerViewModel)
             }
             Button(action: {
-                
+                self.moreApps.toggle()
+               guard let google = URL(string: "https://www.google.com/"),
+                   UIApplication.shared.canOpenURL(google) else {
+                   return
+               }
+               UIApplication.shared.open(google,
+                                         options: [:],
+                                         completionHandler: nil)
             })
             {
                 VStack(spacing : 8){
-                    Image("logo-3")
+                    Image("more")
                         .renderingMode(.original)
                         .resizable()
-                        .frame(width : 50 , height: 50)
+                        .frame(width : 100 , height: 100)
+                    Text("More Apps")
                 }
                 
             }

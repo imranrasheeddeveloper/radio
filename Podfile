@@ -9,11 +9,10 @@ target 'GhanaRadio' do
   pod 'Google-Mobile-Ads-SDK'
   pod "SwiftCSV"
   pod 'FlagKit'
-  
+  pod 'ReachabilitySwift'
   pod 'Firebase/Analytics'
-  
+  pod 'SwiftyGif'
   pod 'Firebase/Firestore'
   pod 'FirebaseFirestoreSwift'
   pod 'CodableFirebase'
-
 end

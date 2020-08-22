@@ -327,7 +327,9 @@ PODS:
   - nanopb/decode (1.30905.0)
   - nanopb/encode (1.30905.0)
   - PromisesObjC (1.2.9)
+  - ReachabilitySwift (5.0.0)
   - SwiftCSV (0.5.6)
+  - SwiftyGif (5.3.0)
 
 DEPENDENCIES:
   - CodableFirebase
@@ -336,7 +338,9 @@ DEPENDENCIES:
   - FirebaseFirestoreSwift
   - FlagKit
   - Google-Mobile-Ads-SDK
+  - ReachabilitySwift
   - SwiftCSV
+  - SwiftyGif
 
 SPEC REPOS:
   trunk:
@@ -360,7 +364,9 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - PromisesObjC
+    - ReachabilitySwift
     - SwiftCSV
+    - SwiftyGif
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
@@ -383,8 +389,10 @@ SPEC CHECKSUMS:
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SwiftCSV: efb4a15dd7f2f1212b3d6986f97a3369ff6c5100
+  SwiftyGif: e466e86c660d343357ab944a819a101c4127cb40
 
-PODFILE CHECKSUM: 797ef3fedb3d6f778ecad563cece14f49ec10695
+PODFILE CHECKSUM: ef48c68a46d3a781f3c69eccaab7bd5781b2f1e4
 
 COCOAPODS: 1.10.0.beta.1

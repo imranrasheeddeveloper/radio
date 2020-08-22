@@ -25,6 +25,7 @@ struct PlayerView: View {
     // MARK: - VIEW
     var body: some View {
         ZStack {
+            //Color(hex: "ffe976").edgesIgnoringSafeArea(.all)
             Color.orange.opacity(0.2).edgesIgnoringSafeArea(.all)
             VStack(alignment: .center, spacing: 10) {
                 

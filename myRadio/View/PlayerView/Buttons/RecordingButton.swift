@@ -27,7 +27,7 @@ struct RecordingButton: View {
                 .padding(10)            
         }.sheet(isPresented: $showRecordingsModal) {
             RecordingsView()
-                .environmentObject(self.playerViewModel)
+        .environmentObject(self.playerViewModel)
         }
     }
 }

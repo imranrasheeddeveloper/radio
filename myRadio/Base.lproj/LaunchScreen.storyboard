@@ -15,37 +15,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="bog-9c-Lb4">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SwissRadio" translatesAutoresizingMaskIntoConstraints="NO" id="bog-9c-Lb4">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Radio Player" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="Ccy-Yh-uVe">
-                                <rect key="frame" x="0.0" y="219" width="414" height="58"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="58" id="z8M-gL-exr"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="29"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo-3" translatesAutoresizingMaskIntoConstraints="NO" id="2WV-H2-wfs">
-                                <rect key="frame" x="107" y="348" width="200" height="200"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="j05-b6-3R6"/>
-                                    <constraint firstAttribute="height" constant="200" id="jJN-K3-0SH"/>
-                                </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="Ccy-Yh-uVe" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="175" id="1xh-ni-JOn"/>
-                            <constraint firstItem="2WV-H2-wfs" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Cjd-1H-RBa"/>
                             <constraint firstItem="bog-9c-Lb4" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Izy-ow-Klo"/>
-                            <constraint firstItem="2WV-H2-wfs" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="L1j-iH-VB9"/>
                             <constraint firstItem="bog-9c-Lb4" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="topMargin" constant="-44" id="Q6Z-Bc-fNc"/>
                             <constraint firstItem="bog-9c-Lb4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="WH4-Gu-B1x"/>
                             <constraint firstItem="bog-9c-Lb4" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="YpD-DU-NOh"/>
-                            <constraint firstItem="Ccy-Yh-uVe" firstAttribute="trailing" secondItem="bog-9c-Lb4" secondAttribute="trailing" id="e7G-4C-Xb3"/>
-                            <constraint firstItem="Ccy-Yh-uVe" firstAttribute="leading" secondItem="bog-9c-Lb4" secondAttribute="leading" id="mz5-aB-8lU"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -56,7 +35,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchScreen" width="2048" height="2048"/>
-        <image name="logo-3" width="150" height="150"/>
+        <image name="SwissRadio" width="1080" height="1920"/>
     </resources>
 </document>
