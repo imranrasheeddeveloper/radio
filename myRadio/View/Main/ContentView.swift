@@ -92,10 +92,10 @@ struct ContentView: View {
             SCNetworkReachabilityGetFlags(self.reach! , &flags)
             
             if self.isNetwork(with: flags){
-                print("InterNet")
+                print("Internet")
             }
             else{
-                print ("No Inter Net")
+                print ("No Internet")
             }
         }
     }
