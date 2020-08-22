@@ -8,10 +8,13 @@
 
 import SwiftUI
 import GoogleMobileAds
-
+import SystemConfiguration
 
 
 struct ContentView: View {
+    
+    
+    private let reach = SCNetworkReachabilityCreateWithName(nil, "www.apple.com")
     
     // MARK: - PROPERTIES
     @EnvironmentObject var stationListViewModel: StationListModelView
@@ -84,7 +87,25 @@ struct ContentView: View {
                     })
                 )
             }// Navigation
+        }.onAppear{
+            var flags = SCNetworkReachabilityFlags()
+            SCNetworkReachabilityGetFlags(self.reach! , &flags)
+            
+            if self.isNetwork(with: flags){
+                print("InterNet")
+            }
+            else{
+                print ("No Inter Net")
+            }
         }
+    }
+    func isNetwork(with flag :SCNetworkReachabilityFlags) -> Bool {
+        let isreachable = flag.contains(.reachable)
+        let neededconection = flag.contains(.connectionRequired)
+        let connectionauto = flag.contains(.connectionOnDemand) || flag.contains(.connectionOnTraffic)
+        
+        let connectWitoutInteraction = connectionauto && !flag.contains(.interventionRequired)
+        return isreachable && (!neededconection || connectWitoutInteraction)
     }
 }
 
