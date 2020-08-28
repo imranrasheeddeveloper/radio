@@ -91,7 +91,6 @@ struct StationListView: View {
                 self.playStreaming()
             }
         }
-        
     } // body
 }
 

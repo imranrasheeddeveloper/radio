@@ -212,6 +212,8 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
+  - ASCollectionView-SwiftUI (1.7.1):
+    - DifferenceKit (~> 1.1)
   - BoringSSL-GRPC (0.0.7):
     - BoringSSL-GRPC/Implementation (= 0.0.7)
     - BoringSSL-GRPC/Interface (= 0.0.7)
@@ -219,6 +221,12 @@ PODS:
     - BoringSSL-GRPC/Interface (= 0.0.7)
   - BoringSSL-GRPC/Interface (0.0.7)
   - CodableFirebase (0.2.1)
+  - DifferenceKit (1.1.5):
+    - DifferenceKit/Core (= 1.1.5)
+    - DifferenceKit/UIKitExtension (= 1.1.5)
+  - DifferenceKit/Core (1.1.5)
+  - DifferenceKit/UIKitExtension (1.1.5):
+    - DifferenceKit/Core
   - Firebase/Analytics (6.28.1):
     - Firebase/Core
   - Firebase/Core (6.28.1):
@@ -332,6 +340,7 @@ PODS:
   - SwiftyGif (5.3.0)
 
 DEPENDENCIES:
+  - ASCollectionView-SwiftUI (~> 1.3)
   - CodableFirebase
   - Firebase/Analytics
   - Firebase/Firestore
@@ -345,8 +354,10 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - abseil
+    - ASCollectionView-SwiftUI
     - BoringSSL-GRPC
     - CodableFirebase
+    - DifferenceKit
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -370,8 +381,10 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
+  ASCollectionView-SwiftUI: 9c24b5293f22e565619edeac39f99de398ce9874
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   CodableFirebase: 0bf201991eeec35eb9fcd987d271ea463cf34a80
+  DifferenceKit: 516f12e336ed65a3a0665847b5c3cb5cad4bd4ea
   Firebase: ed042590caa0029392257529a8003c25ee82bc18
   FirebaseAnalytics: 5fa308e1b13f838d0f6dc74719ac2a72e8c5afc4
   FirebaseCore: 687b8e6a0a4337b898a6326d68254c2f80c143af
@@ -393,6 +406,6 @@ SPEC CHECKSUMS:
   SwiftCSV: efb4a15dd7f2f1212b3d6986f97a3369ff6c5100
   SwiftyGif: e466e86c660d343357ab944a819a101c4127cb40
 
-PODFILE CHECKSUM: ef48c68a46d3a781f3c69eccaab7bd5781b2f1e4
+PODFILE CHECKSUM: c44e24733470ae2f44ac6af51dbfe140e7bd43d2
 
 COCOAPODS: 1.10.0.beta.1

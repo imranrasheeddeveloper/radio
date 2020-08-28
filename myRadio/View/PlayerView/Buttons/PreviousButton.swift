@@ -18,14 +18,14 @@ struct PreviousButton: View {
         Button(action: {
             self.playerViewModel.streamPreviousStation()
         }) {
-//            Image(systemName: "backward.end.fill")
-//                .foregroundColor(.orange)
-//                .padding(20)
- //               .modifier(PlayerControllerButtonModifier())
-            Image("previous").renderingMode(.original)
-            .resizable()
-            .frame(width: 50, height: 50)
-            .padding(20)
+            Image(systemName: "backward.end.fill")
+                .foregroundColor(Color(hex: "#ff66c4"))
+                .padding(20)
+                .modifier(PlayerControllerButtonModifier())
+//            Image("previous").renderingMode(.original)
+//            .resizable()
+//            .frame(width: 50, height: 50)
+//            .padding(20)
             //.modifier(PlayerControllerButtonModifier())
             
             

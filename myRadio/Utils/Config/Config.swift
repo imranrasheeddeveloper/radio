@@ -53,7 +53,7 @@ let dataJsonFile = "station_list.json" /// File is located in Resources folder
 let showLogoInPlayerScreen = true
 
 // Open full player screen when tap to station in main list
-let openFullPlayerViewAuto = false
+let openFullPlayerViewAuto = true
 
 // Artwork Image Size
 let artworkSize:CGFloat = 180

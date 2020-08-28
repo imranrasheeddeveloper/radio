@@ -26,7 +26,8 @@ struct PlayerView: View {
     var body: some View {
         ZStack {
             //Color(hex: "ffe976").edgesIgnoringSafeArea(.all)
-            Color.orange.opacity(0.2).edgesIgnoringSafeArea(.all)
+           // Color.orange.opacity(0.2).edgesIgnoringSafeArea(.all)
+            LinearGradient(gradient: Gradient(colors: [.blue, .white, .pink]), startPoint: .topLeading, endPoint: .bottomTrailing)
             VStack(alignment: .center, spacing: 10) {
                 
                 if (self.playerViewModel.track.artworkURL != nil) {
@@ -44,7 +45,7 @@ struct PlayerView: View {
                     .onDisappear { self.isAnimating = false }
                 } else {
                     ImageLoaderView(imageUrl: station.logo)
-                        .frame(width: 100, height: 100, alignment: .center)
+                        .frame(width: 200, height: 200 , alignment: .center)
                         .rotationEffect(Angle(degrees: self.isAnimating ? 360.0 : 0.0))
                         .animation(self.foreverAnimation)
                         .onAppear {
@@ -58,6 +59,7 @@ struct PlayerView: View {
                 Text(self.playerViewModel.track.metaTitle())
                     .font(.system(.body, design: .rounded))
                     .fontWeight(.light)
+                    
                 
                 Text(station.title)
                     .font(.system(.title, design: .rounded))
@@ -71,19 +73,19 @@ struct PlayerView: View {
                     .padding(.horizontal, 10)
                     .multilineTextAlignment(.center)
                 
-                Spacer()
+                //Spacer()
                 
-                if showBannerLargeAds {
-                    BannerLargeVC()
-                        .frame(width:  kGADAdSizeLargeBanner.size.width, height: kGADAdSizeLargeBanner.size.height, alignment: .center)
-                }
+//                if showBannerLargeAds {
+//                    BannerLargeVC()
+//                        .frame(width:  kGADAdSizeLargeBanner.size.width, height: kGADAdSizeLargeBanner.size.height, alignment: .center)
+//                }
                 
-                if (showLogoInPlayerScreen) {
-                    Image("logo_player")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxHeight: 100)
-                }
+//                if (showLogoInPlayerScreen) {
+//                    Image("logo_player")
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(maxHeight: 100)
+//                }
                 
                 
                 HStack(alignment: .center, spacing: 40) {
@@ -109,6 +111,12 @@ struct PlayerView: View {
                     
                     // MARK: Next Station
                     NextButton()
+                }
+                if showBannerLargeAds {
+//                    BannerLargeVC()
+//                        .frame(width:  kGADAdSizeLargeBanner.size.width, height: kGADAdSizeLargeBanner.size.height, alignment: .center)
+                    BannerVC()
+                        .frame(width: kGADAdSizeBanner.size.width, height: kGADAdSizeBanner.size.height, alignment: .center)
                 }
             } // VStack
                 .padding(.vertical, 20)

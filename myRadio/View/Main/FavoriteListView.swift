@@ -31,12 +31,10 @@ struct FavoriteListView: View {
                 .modifier(TitleModifier())
             
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(alignment: .center, spacing: 10) {
+                VStack(alignment: .center, spacing: 10) {
                     ForEach(stationListViewModel.favoriteStationList) { item in
                         Button(action: {
-                            
                             self.selectedStation = item
-                            
                             // Pause the music if player is active
                             if self.playerViewModel.isPlaying {
                                 self.playerViewModel.togglePlaying()

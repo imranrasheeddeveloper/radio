@@ -15,4 +15,5 @@ target 'GhanaRadio' do
   pod 'Firebase/Firestore'
   pod 'FirebaseFirestoreSwift'
   pod 'CodableFirebase'
+  pod 'ASCollectionView-SwiftUI', '~> 1.3'
 end

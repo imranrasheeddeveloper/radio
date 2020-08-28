@@ -10,7 +10,7 @@ import Foundation
 import SwiftCSV
 import FirebaseFirestore
 import CodableFirebase
-
+import SystemConfiguration
 let db = Firestore.firestore()
 
 // All station list will be loaded at the opening of application
@@ -142,74 +142,99 @@ final class StationListModelView: ObservableObject {
     // MARK: REMOTE CSV GOOGLE SHEET
     
     func readDataFromRemoteCSV() {
-        do {
-            let csvFile: CSV = try CSV(url: URL(string: csvUrl)!)
-            
-            try csvFile.enumerateAsDict { dict in
-                
-                // If station row is active, add to list
-                if dict["STATUS"] == "1" {
-                    
-                    // Parse genres from the csv response
-                    var genres:[String] = []
-                    for genre in dict["GENRES"]!.components(separatedBy: ",") {
-                        genres.append(genre)
-                    }
-                    
-                    let countryCode = dict["COUNTRY"]!
-                    
-                    // Create a station object
-                    let station: Station = Station(
-                        id: dict["ID"]!,
-                        countryCode: countryCode,
-                        title: dict["TITLE"]!,
-                        logo: dict["LOGO"]!,
-                        streamURL: dict["STREAMURL"]!,
-                        desc: dict["DESC"]!,
-                        genres: genres,
-                        status: true
-                    )
+        let reach = SCNetworkReachabilityCreateWithName(nil, "www.apple.com")
+        var flags = SCNetworkReachabilityFlags()
+        SCNetworkReachabilityGetFlags(reach!, &flags)
+        if self.isNetwork(with: flags){
+                    do {
+                 let csvFile: CSV = try CSV(url: URL(string: csvUrl)!)
+                 
+                 try csvFile.enumerateAsDict { dict in
+                     
+                     // If station row is active, add to list
+                     if dict["STATUS"] == "1" {
+                         
+                         // Parse genres from the csv response
+                         var genres:[String] = []
+                         for genre in dict["GENRES"]!.components(separatedBy: ",") {
+                             genres.append(genre)
+                         }
+                         
+                         let countryCode = dict["COUNTRY"]!
+                         
+                         // Create a station object
+                         let station: Station = Station(
+                             id: dict["ID"]!,
+                             countryCode: countryCode,
+                             title: dict["TITLE"]!,
+                             logo: dict["LOGO"]!,
+                             streamURL: dict["STREAMURL"]!,
+                             desc: dict["DESC"]!,
+                             genres: genres,
+                             status: true
+                         )
 
-                    // Add station to the all station list
-                    stationList.append(station)
-                }
-            }
+                         // Add station to the all station list
+                         stationList.append(station)
+                     }
+                 }
 
-            // Configure genres, countries, favorites
-            configureLoadedData()
-            self.dataIsLoading = false
+                 // Configure genres, countries, favorites
+                 configureLoadedData()
+                 self.dataIsLoading = false
+             }
+             catch {
+                 print("ERROR: Loading CSV File error")
+             }
+
         }
-        catch {
-            print("ERROR: Loading CSV File error")
+        else{
+          
+    
         }
+
     }
+    
+    func isNetwork(with flag :SCNetworkReachabilityFlags) -> Bool {
+          let isreachable = flag.contains(.reachable)
+          let neededconection = flag.contains(.connectionRequired)
+          let connectionauto = flag.contains(.connectionOnDemand) || flag.contains(.connectionOnTraffic)
+          
+          let connectWitoutInteraction = connectionauto && !flag.contains(.interventionRequired)
+          return isreachable && (!neededconection || connectWitoutInteraction)
+      }
     
     // MARK: REMOTE JSON
     func readFromRemoteJson() {
-        
-        if let url = URL(string: jsonUrl) {
-            let urlSession = URLSession(configuration: .default).dataTask(with: url) { (data, response, error) in
-                if let error = error {
-                    fatalError("Couldn't fetch remote json file. Error: \(error)")
-                } else if let data = data {
-                    do {
-                        let decoder = JSONDecoder()
-                        stationList = try decoder.decode([Station].self, from: data)
-                        // Configure genres, countries, favorites
-                        self.configureLoadedData()
-                        DispatchQueue.main.async {
-                            self.dataIsLoading = false
-                        }
-                    } catch {
-                        fatalError("Couldn't parse remote json file")
-                    }
-                } else {
-                    fatalError("Couldn't fetch data")
-                }
-            }
-            
-            urlSession.resume()
+        let reach = SCNetworkReachabilityCreateWithName(nil, "www.apple.com")
+        var flags = SCNetworkReachabilityFlags()
+        SCNetworkReachabilityGetFlags(reach!, &flags)
+        if self.isNetwork(with: flags){
+            if let url = URL(string: jsonUrl) {
+                      let urlSession = URLSession(configuration: .default).dataTask(with: url) { (data, response, error) in
+                          if let error = error {
+                              fatalError("Couldn't fetch remote json file. Error: \(error)")
+                          } else if let data = data {
+                              do {
+                                  let decoder = JSONDecoder()
+                                  stationList = try decoder.decode([Station].self, from: data)
+                                  // Configure genres, countries, favorites
+                                  self.configureLoadedData()
+                                  DispatchQueue.main.async {
+                                      self.dataIsLoading = false
+                                  }
+                              } catch {
+                                  fatalError("Couldn't parse remote json file")
+                              }
+                          } else {
+                              fatalError("Couldn't fetch data")
+                          }
+                      }
+                      
+                      urlSession.resume()
+                  }
         }
+      
    }
     
     // MARK: LOCAL DATA

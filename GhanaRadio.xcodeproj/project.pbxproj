@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4F1CEE9D24EB213A00F6EF6D /* SleeperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1CEE9C24EB213A00F6EF6D /* SleeperView.swift */; };
+		4F29E90E24F7D56F00E544D2 /* SingleSectionExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F29E90D24F7D56F00E544D2 /* SingleSectionExampleView.swift */; };
 		4F74636D24F14AC000F3A414 /* InternetReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F74636C24F14AC000F3A414 /* InternetReachability.swift */; };
 		4F74637324F1525300F3A414 /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F74637224F1525300F3A414 /* About.swift */; };
 		53030600248012D80092BBB8 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 530305FF248012D80092BBB8 /* SearchBarView.swift */; };
@@ -67,6 +68,7 @@
 /* Begin PBXFileReference section */
 		32ABF5ADAC725007414D68E2 /* Pods_GhanaRadio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GhanaRadio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F1CEE9C24EB213A00F6EF6D /* SleeperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SleeperView.swift; sourceTree = "<group>"; };
+		4F29E90D24F7D56F00E544D2 /* SingleSectionExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSectionExampleView.swift; sourceTree = "<group>"; };
 		4F74636C24F14AC000F3A414 /* InternetReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetReachability.swift; sourceTree = "<group>"; };
 		4F74637224F1525300F3A414 /* About.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
 		530305FF248012D80092BBB8 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
@@ -275,6 +277,7 @@
 				53D9A695247A9685009C7F61 /* ControllerView.swift */,
 				4F74636C24F14AC000F3A414 /* InternetReachability.swift */,
 				4F74637224F1525300F3A414 /* About.swift */,
+				4F29E90D24F7D56F00E544D2 /* SingleSectionExampleView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -512,6 +515,7 @@
 				53D9A696247A9685009C7F61 /* ControllerView.swift in Sources */,
 				53C1B629248FA53500A4ACA4 /* RecordingsView.swift in Sources */,
 				538F79A3247D7CFB00A38178 /* FavoriteListView.swift in Sources */,
+				4F29E90E24F7D56F00E544D2 /* SingleSectionExampleView.swift in Sources */,
 				53ADE674247D24AF006BF841 /* FavoriteCellView.swift in Sources */,
 				5386FC2924797C5300AC71FF /* StationRowView.swift in Sources */,
 				538DAAF62490F22700BD0822 /* SleepButton.swift in Sources */,

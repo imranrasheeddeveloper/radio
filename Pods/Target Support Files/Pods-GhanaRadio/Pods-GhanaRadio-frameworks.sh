@@ -175,8 +175,10 @@ code_sign_if_enabled() {
 }
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/ASCollectionView-SwiftUI/ASCollectionView_SwiftUI.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CodableFirebase/CodableFirebase.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/DifferenceKit/DifferenceKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FlagKit/FlagKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework"
@@ -190,8 +192,10 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/ASCollectionView-SwiftUI/ASCollectionView_SwiftUI.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/CodableFirebase/CodableFirebase.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/DifferenceKit/DifferenceKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FlagKit/FlagKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework"

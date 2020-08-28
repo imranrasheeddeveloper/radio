@@ -26,6 +26,8 @@ struct ImageLoaderView: View {
 
 struct ImageLoaderView_Previews: PreviewProvider {
     static var previews: some View {
-        ImageLoaderView(imageUrl: "https://s3soft.com/wp-content/uploads/2020/03/logo-1.png")
+        ImageLoaderView(imageUrl: "https://imgur.com/eebIJ34")
+        
+        //"https://s3soft.com/wp-content/uploads/2020/03/logo-1.png"
     }
 }

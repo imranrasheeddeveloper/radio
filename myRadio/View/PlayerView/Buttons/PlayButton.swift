@@ -32,10 +32,9 @@ struct PlayButton: View {
 //                .frame(width:30, height:30)
 //                .foregroundColor(.orange)
 //                .padding(30)
-//                .modifier(PlayerControllerButtonModifier())
-            
+               // .modifier(PlayerControllerButtonModifier())
             .resizable()
-            .frame(width: 65, height: 65)
+            .frame(width: 75, height: 75)
             .padding(25)
         }
     }
